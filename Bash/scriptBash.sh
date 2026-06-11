@@ -59,7 +59,15 @@ option_1Users(){
 		local last_login last_term
 		local l_line
 		l_line=$(last -1 "$username" 2>/dev/null | head -1)
-		
+
+		if [[ -z "$l_line" ]]; then
+			last_login="Nunca"
+			last_term="-"
+		else
+			last_term=$(echo "$l_line" | awk '{print $2}')
+			last_login=$(echo "$l_line" | awk '{print $4, $5, $6, $7}')
+		fi
+
 		printf "  %-20s %-12s %-20s %-15s\n" \
 				"$username" "$uid" "$last_login" "$last_term"
 		(( count++ ))
@@ -297,7 +305,7 @@ option_5BackUp(){
 	echo ""
 	echo ""
     echo " ===========OPCIÓN 5================"
-	echo "Memoria libre y swap en uso"
+	echo "Copia de seguridad a USB"
 	echo ""
 
 	echo "Volumenes disponibles en /Volumes:"
